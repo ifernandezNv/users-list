@@ -1,9 +1,25 @@
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider
+} from "react-router-dom";
+
+import Layout from "./Components/Layouts/Layout";
+import WelcomePage from "./Pages/WelcomePage";
+import UsersPage from "./Pages/UsersPage";
+
 function App() {
-  
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path="/" element={<Layout/>}>
+        <Route path="home" element={<WelcomePage/>} />
+        <Route path="users" element={<UsersPage/>} />
+      </Route>
+    )
+  )  
   return (
-    <>
-      <p className='bg-indigo-900 text-white'>Esto es un p</p>
-    </>
+    <RouterProvider router={router} />
   )
 }
 
