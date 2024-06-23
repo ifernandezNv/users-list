@@ -8,7 +8,7 @@ type AlertProps = {
 const Alert = ({type, message}: AlertProps) => {
 
   return (
-    <div className={`${type === "success" ? "bg-green-700" : " bg-red-800"} p-2 rounded text-white text-center text-bold`}>
+    <div className={`${type === "success" ? "bg-green-700" : " bg-red-800"} p-2 rounded text-white text-center font-bold`}>
         {message}
     </div>
   )

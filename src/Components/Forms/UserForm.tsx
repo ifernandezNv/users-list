@@ -1,30 +1,87 @@
 import {FormEvent, useState} from 'react'
 
-import { GenderEnum } from '../../types'
+import { Icon } from '@iconify/react';
+
+import { GenderEnum, AlertInfoType, AlertType } from '../../types'
 import { validateEmail } from '../../utils/regex'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { switchFormModal, switchAlert, setUsers, setUserId } from '../../Pages/UsersPage/reducer/usersSlice'
+import { RootState } from '../../store'
+import Alert from '../Alerts/Alert';
+import { createUser } from './utils';
+import { getUsers } from '../../Pages/UsersPage/utils';
 const UserForm = () => {
   const [name, setName] = useState<string>("")
   const [email, setEmail] = useState<string>("")
-  const [gender, setGender] = useState<GenderEnum>()
+  const [gender, setGender] = useState<GenderEnum>("female")
+  const [alert, setAlert] = useState<AlertInfoType>()
+  const userId = useAppSelector((state: RootState) => state.users.userId )
+  const showAlert = useAppSelector((state: RootState) => state.users.showAlert )
+  const dispatch = useAppDispatch()
 
-  const handleSubmit = (e: FormEvent)=>{
+  const closeModal = ()=>{
+    setName("")
+    setEmail("")
+    setGender("female")
+    setUserId("")
+    dispatch(switchFormModal())
+  }
+  const handleSubmit = async (e: FormEvent)=>{
     e.preventDefault()
     if(Object.values([name, email, gender]).includes("")){
-      console.log("Todos los campos son obligatorios")
+      setAlert({
+        message: "All fields are required",
+        type: "error"
+      })
+      dispatch(switchAlert())
+      setTimeout(() => {
+        dispatch(switchAlert())
+      }, 3000);
       return
     }
     if(!validateEmail(email)){
-      console.log("El correo debe de seguir este formato: correo@correo.com")
+      setAlert({
+        message: "Email should follow this format: email@domain.com",
+        type: "error"
+      })
+      dispatch(switchAlert())
+      setTimeout(() => {
+        dispatch(switchAlert())
+      }, 3000);
       return
     }
-
+    if(userId){
+      console.log("Actualizar usuario")
+      return
+    }
+    const result = await createUser({id: "",name, email, gender, status: "inactive"})
+    if(result){
+      setAlert({
+        message: "User created successfully",
+        type: "success"
+      })
+      dispatch(switchAlert())
+      const result = await getUsers()
+      setTimeout(() => {
+        dispatch(switchAlert())
+        dispatch(setUsers(result))
+        closeModal()
+      }, 3000);
+    }
   }
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <form onSubmit={handleSubmit} className='bg-white p-4 shadow'>
+      <form onSubmit={handleSubmit} className='bg-white p-6 shadow w-1/2'>
+        <p className='text-2xl font-bold text-center'>{userId.length <= 0 ? "Create a New User" : "Update User"}</p>
         <div className='flex flex-col gap-3'>
+          {showAlert && (
+            <Alert
+              message={alert?.message as string}
+              type={alert?.type as AlertType}
+            />
+          )}
           <div className='flex flex-col gap-1'>
-            <label htmlFor="name">Name</label>
+            <label htmlFor="name">Name:</label>
             <input 
               type="text" 
               value={name}
@@ -34,7 +91,7 @@ const UserForm = () => {
             />
           </div>
           <div className='flex flex-col gap-2'>
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">Email:</label>
             <input 
               type="text" 
               value={email}
@@ -44,7 +101,7 @@ const UserForm = () => {
             />
           </div>
           <div className='flex flex-col gap-2'>
-            <label htmlFor="gender">Gender</label>
+            <label htmlFor="gender">Gender:</label>
             <select 
               value={gender} 
               onChange={ (e)=>setGender(e.target.value as GenderEnum ) }
@@ -55,11 +112,23 @@ const UserForm = () => {
               <option value="female">Female</option>
             </select>
           </div>
-          <div className='flex items-center'>
-            <input type="button" value="Create New User" className='bg-indigo-800 text-white font-bold rounded w-[80%]'/>
+          <div className='flex items-center justify-between'>
+          <button onClick={closeModal} className='border border-indigo-900 p-2 rounded'>
+            Cancelar
+          </button>
+            <input 
+              type="submit" 
+              value={userId.length <= 0 ? "Create a New User" : "Save Changes"} 
+              className='cursor-pointer bg-indigo-800 p-2 text-white font-bold rounded'
+            />
           </div>
         </div>
       </form>
+      <div className='absolute w-10 bottom-[10%] right-[50%]'>
+        <button onClick={closeModal}>
+          <Icon icon="gridicons:cross-circle" height={40} className='text-white'/>
+        </button>
+      </div>
     </div>
   )
 }

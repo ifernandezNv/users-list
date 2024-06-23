@@ -2,9 +2,9 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import usersReducer from './Pages/UsersPage/reducer/usersSlice'
 
 export const store = configureStore({
-    reducer: {
-        users: usersReducer
-    }
+  reducer: {
+    users: usersReducer
+  }
 })
 
 export type RootState = ReturnType<typeof store.getState>;

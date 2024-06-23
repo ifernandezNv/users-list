@@ -9,3 +9,7 @@ export interface UserType{
     gender: GenderEnum;
     status: StatusEnum;
 }
+export type AlertInfoType = {
+    message: string;
+    type: AlertType
+}

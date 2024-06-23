@@ -5,16 +5,15 @@ import {
   RouterProvider
 } from "react-router-dom";
 
-import Layout from "./Components/Layouts/Layout";
-import WelcomePage from "./Pages/WelcomePage";
+import Layout from "./Components/Layouts/Layout"
 import UsersPage from "./Pages/UsersPage";
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Layout/>}>
-        <Route path="home" element={<WelcomePage/>} />
-        <Route path="users" element={<UsersPage/>} />
+        {/* <Route index element={<WelcomePage/>} /> */}
+        <Route index element={<UsersPage/>} />
       </Route>
     )
   )  
