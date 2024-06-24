@@ -11,6 +11,7 @@ export interface UserType{
 export type initialStateType = {
     users: UserType[];
     userId: string,
+    name: string,
     showFormModal: boolean,
     showDeleteWarning: boolean,
 }

@@ -6,6 +6,7 @@ import { UserType, initialStateType } from "../types";
 const initialState: initialStateType = {
     users: [] as UserType[],
     userId: "",
+    name: "",
     showFormModal: false,
     showDeleteWarning: false,
 };
@@ -20,6 +21,9 @@ const usersSlice = createSlice({
         setUserId(state, action: PayloadAction<string>){
             state.userId = action.payload
         },
+        setName(state, action: PayloadAction<string>){
+            state.name = action.payload
+        },
         resetUserId(state){
             state.userId = ""
         },
@@ -29,12 +33,12 @@ const usersSlice = createSlice({
         switchDeleteWarning(state){
             state.showDeleteWarning = !state.showDeleteWarning
         },
-
     }
 });
 export const { 
     setUsers, 
     setUserId, 
+    setName,
     switchFormModal, 
     switchDeleteWarning,
 } = usersSlice.actions

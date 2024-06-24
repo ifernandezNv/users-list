@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react"
+import {useState} from "react"
 
 import {Icon} from "@iconify/react"
 
@@ -9,19 +9,16 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks"
 import { setUsers, switchDeleteWarning, setUserId } from "../../Pages/UsersPage/reducer/usersSlice"
 import { switchAlert, switchLoading } from "../../Pages/WelcomePage/reducer/generalSlice"
 import { getUsers } from "../../Pages/UsersPage/utils"
-import { getUser } from "../UserForm/utils"
 import Alert from "../Alert"
 import LoadingSpinner from "../LoadingSpinner"
-import { UserType } from "../../Pages/UsersPage/types"
 import Button from "../Reusables/Button"
 const DeleteWarningModal = () => {
   const [alert, setAlert] = useState<AlertInfoType>({} as AlertInfoType)
-  const [name, setName] = useState<string>("")
   const userId = useAppSelector((state: RootState) => state.users.userId )
+  const name = useAppSelector((state: RootState) => state.users.name )
   const showAlert = useAppSelector((state: RootState) => state.general.showAlert )
   const loading = useAppSelector((state: RootState) => state.general.loading )
   const dispatch = useAppDispatch()
-
   const deleteUserFunction = async ()=>{
     dispatch(switchLoading())
     const result = await deleteUser(userId)
@@ -43,16 +40,7 @@ const DeleteWarningModal = () => {
     dispatch(setUserId(""))
     dispatch(switchDeleteWarning())
   }
-  useEffect( ()=>{
-    if(userId){
-      dispatch(switchLoading())
-      getUser(userId).then( (result: UserType) =>{
-        setName(result.name)
-      }).finally( ()=>dispatch(switchLoading()) )
 
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[userId] )
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
       <div className='flex flex-col items-center justify-center gap-5 bg-white p-5 rounded'>
@@ -72,7 +60,7 @@ const DeleteWarningModal = () => {
             color="#D97706"
           />
           <p className="font-bold text-lg">¿Estás seguro de eliminar este usuario? <span className="font-light">{userId}</span></p>
-          <p>Recuerda que al hacerlo, toda su información se eliminará y no se podrá recuperar</p>
+          <p>Recuerda que al hacerlo, toda su información se eliminará y no la podremos recuperar</p>
           <p className="text-lg">Usuario a eliminar: <span className="font-bold">{name}</span></p>
         </div>
         <div className='w-[100%] flex items-center justify-between'>

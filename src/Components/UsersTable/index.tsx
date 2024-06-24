@@ -3,7 +3,7 @@ import {UserType} from "../../Pages/UsersPage/types"
 import GenderBadge from '../Badges/GenderBadge';
 import StatusBadge from '../Badges/StatusBadge';
 import { useAppDispatch } from '../../hooks/reduxHooks';
-import { switchFormModal, switchDeleteWarning, setUserId } from '../../Pages/UsersPage/reducer/usersSlice';
+import { switchFormModal, switchDeleteWarning, setUserId, setName } from '../../Pages/UsersPage/reducer/usersSlice';
 import Button from "../Reusables/Button";
 type UsersTableProps = {
     users: UserType[]
@@ -11,8 +11,9 @@ type UsersTableProps = {
 const UsersTable = ({users}: UsersTableProps) => {
     const dispatch = useAppDispatch()
 
-    const popDeleteWarning = (id: string)=>{
+    const popDeleteWarning = (id: string, name: string)=>{
         dispatch(setUserId(id))
+        dispatch(setName(name))
         dispatch(switchDeleteWarning())
     }
     const popFormModal = (id: string)=>{
@@ -21,7 +22,7 @@ const UsersTable = ({users}: UsersTableProps) => {
     }
   return (
     <table className='w-full table-auto rounded'>
-        <thead className='border bg-indigo-800 text-white font-bold'>
+        <thead className='border bg-cyan-800 text-white font-bold'>
             <tr>
                 <th>Id</th>
                 <th>Nombre</th>
@@ -50,7 +51,7 @@ const UsersTable = ({users}: UsersTableProps) => {
                         />
                         <Button 
                             className=' bg-red-800 text-white'
-                            onClick={()=>popDeleteWarning(user.id)}
+                            onClick={()=>popDeleteWarning(user.id, user.name)}
                             text="Eliminar"
                             icon="mdi:trash"
                         />

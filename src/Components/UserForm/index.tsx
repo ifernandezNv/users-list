@@ -1,7 +1,5 @@
 import {FormEvent, useEffect, useState} from 'react'
 
-import { Icon } from '@iconify/react';
-
 import {  AlertInfoType, AlertType } from '../../types'
 import { validateEmail } from '../../utils/regex'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
@@ -13,6 +11,7 @@ import { RootState } from '../../store'
 import { createUser, getUser, updateUser } from './utils';
 import Alert from '../Alert';
 import LoadingSpinner from '../LoadingSpinner';
+import Button from '../Reusables/Button';
 const UserForm = () => {
   const [name, setName] = useState<string>("")
   const [email, setEmail] = useState<string>("")
@@ -181,21 +180,27 @@ const UserForm = () => {
             </div>
           )}
           <div className='flex items-center justify-between'>
-          <button onClick={closeModal} className='border border-indigo-900 p-2 rounded'>
-            Cancelar
-          </button>
+            <Button 
+              onClick={closeModal} 
+              text="Cancelar" 
+              className='border border-indigo-900 p-2 rounded'
+            />
             <input 
               type="submit" 
               value={userId.length <= 0 ? "Crear Nuevo Usuario" : "Guardar Cambios"} 
-              className='cursor-pointer bg-indigo-800 p-2 text-white font-bold rounded'
+              className='cursor-pointer bg-cyan-800 p-2 text-white font-bold rounded'
             />
           </div>
         </div>
       </form>
       <div className='absolute w-10 bottom-[10%] right-[50%]'>
-        <button onClick={closeModal}>
-          <Icon icon="gridicons:cross-circle" height={40} className='text-white'/>
-        </button>
+        <Button 
+          onClick={closeModal} 
+          icon="gridicons:cross-circle" 
+          className='text-white' 
+          text=""
+          height={40}
+        />
       </div>
     </div>
   )

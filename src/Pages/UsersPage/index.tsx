@@ -31,7 +31,7 @@ const UsersPage = () => {
       <div className="flex items-center justify-between mb-2">
         <h2 className="text-slate-800 font-bold text-3xl">Lista de Usuarios</h2>
         <Button
-          className=" bg-indigo-800 text-white"
+          className=" bg-cyan-800 text-white"
           onClick ={ ()=>dispatch(switchFormModal()) }
           text="Crear Nuevo Usuario"
           icon="carbon:add-filled"

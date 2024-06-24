@@ -5,8 +5,9 @@ type ButtonProps = {
     className: string; 
     onClick: ()=>void;
     icon?: string;
+    height?: number
 }
-const Button = ({text, className, onClick, icon}: ButtonProps) => {
+const Button = ({text, className, onClick, icon, height}: ButtonProps) => {
   return (
     <button
         type='button'
@@ -14,7 +15,10 @@ const Button = ({text, className, onClick, icon}: ButtonProps) => {
         onClick={onClick}
     >
         {icon && (
-            <Icon icon={icon}/>
+          <Icon 
+            icon={icon}
+            height={height ?? 20}
+          />
         )}
         {text}
     </button>

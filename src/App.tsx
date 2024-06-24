@@ -5,7 +5,7 @@ import {
   RouterProvider
 } from "react-router-dom";
 
-import Layout from "./Components/Layouts/Layout"
+import Layout from "./Components/Layout"
 import UsersPage from "./Pages/UsersPage";
 
 function App() {
