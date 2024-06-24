@@ -109,8 +109,8 @@ const UserForm = () => {
     }
   }
   useEffect( ()=>{
-    dispatch(switchLoading())
-    if(userId.length >0){
+    if(userId?.length >0){
+      dispatch(switchLoading())
       getUserInformation().finally( ()=>dispatch(switchLoading()) )
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -121,10 +121,7 @@ const UserForm = () => {
         <p className='text-2xl font-bold text-center'>{userId.length <= 0 ? "Crear Usuario" : "Actualizar Usuario"}</p>
         <div className='flex flex-col gap-3 my-3'>
           {loading && (
-            <>
-              <p>esto es un p</p>
-              <LoadingSpinner/>
-            </>
+            <LoadingSpinner/>
           )}
           {showAlert && !loading && (
             <Alert
