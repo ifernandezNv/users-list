@@ -34,6 +34,11 @@ const DeleteWarningModal = () => {
         dispatch(switchAlert())
         closeModal()
       }, 2000);
+    }else{
+      setAlert({
+        message: "Ocurrió un error al intentar eliminar este usuario, lo revisaremos lo más pronto posible",
+        type: "error"
+      })
     }
   }
   const closeModal = ()=>{
