@@ -2,8 +2,8 @@ import axiosClient from "../../config"
 
 export const deleteUser = async (id: string) =>{
     try {
-        const {data} = await axiosClient.delete(`/users/${id}`)
-        return data
+        await axiosClient.delete(`/users/${id}`)
+        return true
     } catch (error) {
         console.log(error)
     }

@@ -1,14 +1,18 @@
-import { UserType } from '../../types'
+
+import {UserType} from "../../Pages/UsersPage/types"
 import GenderBadge from '../Badges/GenderBadge';
+import StatusBadge from '../Badges/StatusBadge';
 import { useAppDispatch } from '../../hooks/reduxHooks';
 import { switchFormModal, switchDeleteWarning, setUserId } from '../../Pages/UsersPage/reducer/usersSlice';
+import Button from "../Reusables/Button";
 type UsersTableProps = {
     users: UserType[]
 }
 const UsersTable = ({users}: UsersTableProps) => {
     const dispatch = useAppDispatch()
 
-    const popDeleteWarning = ()=>{
+    const popDeleteWarning = (id: string)=>{
+        dispatch(setUserId(id))
         dispatch(switchDeleteWarning())
     }
     const popFormModal = (id: string)=>{
@@ -31,27 +35,25 @@ const UsersTable = ({users}: UsersTableProps) => {
             {users?.length === 0 ? (
                 <p></p>
             ) : users?.map( user => (
-                <tr key={user.id} className='border'>
+                <tr key={user.id} className='border text-center'>
                     <td>{user.id}</td>
                     <td>{user.name}</td>
                     <td>{user.email}</td>
                     <td><GenderBadge gender={user.gender}/></td>
-                    <td>{user.status}</td>
+                    <td><StatusBadge status={user.status}/></td>
                     <td className='flex flex-col items-center gap-2 p-2'>
-                        <button 
-                            type="button" 
-                            className='w-full p-2 text-center text-md rounded bg-amber-600 text-slate-900 font-bold'
+                        <Button 
+                            className=' bg-amber-600 text-slate-900'
                             onClick={ ()=>popFormModal(user.id)}
-                        >
-                            Editar
-                        </button>
-                        <button 
-                            type="button" 
-                            className='w-full p-2 text-center text-md rounded bg-red-800 text-white font-bold'
-                            onClick={popDeleteWarning}
-                        >
-                            Eliminar
-                        </button>
+                            text="Editar"
+                            icon="mdi:pencil"
+                        />
+                        <Button 
+                            className=' bg-red-800 text-white'
+                            onClick={()=>popDeleteWarning(user.id)}
+                            text="Eliminar"
+                            icon="mdi:trash"
+                        />
                     </td>
                 </tr>
             ))}
